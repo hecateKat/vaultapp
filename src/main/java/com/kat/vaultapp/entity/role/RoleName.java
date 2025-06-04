@@ -3,8 +3,7 @@ package com.kat.vaultapp.entity.role;
 import java.util.Objects;
 
 public enum RoleName {
-    ROLE_USER("ROLE_USER"),
-    ROLE_ADMIN("ROLE_ADMIN");
+    ROLE_USER("ROLE_USER");
 
     private final String roleName;
 

@@ -1,0 +1,17 @@
+databaseChangeLog:
+  - changeSet:
+      id: insert_admin
+      author: kat
+      changes:
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  value: '0782ef48-a439-11'
+              - column:
+                  name: login
+                  value: 'mlem'
+              - column:
+                  name: password
+                  value: '$2a$12$gW.xk.Fzbm5V0ai8dkXIs.CvnECMVkS6TpZickTVy2mey7Zx//69C'
