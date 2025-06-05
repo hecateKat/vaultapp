@@ -8,6 +8,8 @@ public interface ItemService {
 
     List<ItemDto> findAll();
 
-    ItemDto save(ItemRequestDto requestDto);
+    List<ItemDto> findAllByUsername(String login);
+
+    ItemDto save(ItemRequestDto requestDto, String login);
 
 }

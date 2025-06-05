@@ -13,5 +13,4 @@ import java.util.UUID;
 public class ItemDto {
     private UUID id;
     private String name;
-    private UUID userId;
 }

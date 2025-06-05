@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -21,15 +22,16 @@ public class ItemController {
     @PostMapping
     @Operation(summary = "Create an item",
     description = "Create a new item")
-    public ItemDto createItem(@RequestBody @Valid ItemRequestDto requestDto) {
-        return itemService.save(requestDto);
+    public ItemDto createItem(@RequestBody @Valid ItemRequestDto requestDto,
+                              @AuthenticationPrincipal(expression = "username") String username) {
+        return itemService.save(requestDto, username);
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping
     @Operation(summary = "Get all items",
     description = "Get a list of current user's items")
-    public List<ItemDto> getAllItems() {
-        return itemService.findAll();
+    public List<ItemDto> getAllItems(@AuthenticationPrincipal(expression = "username") String username) {
+        return itemService.findAllByUsername(username);
     }
 }
