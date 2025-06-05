@@ -1,0 +1,33 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-table-items
+      author: kat
+      changes:
+        - createTable:
+            tableName: items
+            columns:
+              - column:
+                  name: id
+                  type: binary(16)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: binary(16)
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_items_users
+                    referencedTableName: users
+                    referencedColumnNames: id
+              - addForeignKeyConstraint:
+                  baseTableName: items
+                  baseColumnNames: user_id
+                  referencedTableName: users
+                  referencedColumnNames: id
+                  constraintName: fk_items_users
