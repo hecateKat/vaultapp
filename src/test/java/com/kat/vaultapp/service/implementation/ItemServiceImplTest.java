@@ -5,6 +5,8 @@ import com.kat.vaultapp.dto.item.ItemRequestDto;
 import com.kat.vaultapp.entity.item.Item;
 import com.kat.vaultapp.mapper.ItemMapper;
 import com.kat.vaultapp.repository.ItemRepository;
+import com.kat.vaultapp.repository.UserRepository;
+import com.kat.vaultapp.entity.user.User;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -24,6 +26,9 @@ class ItemServiceImplTest {
 
     @Mock
     private ItemMapper itemMapper;
+
+    @Mock
+    private UserRepository userRepository;
 
     @InjectMocks
     private ItemServiceImpl itemService;
@@ -85,12 +90,17 @@ class ItemServiceImplTest {
         expected.setId(item.getId());
         expected.setName(item.getName());
 
+        String login = "testuser";
+        User user = new User();
+        user.setLogin(login);
+
+        Mockito.when(userRepository.findByLogin(login)).thenReturn(java.util.Optional.of(user));
         Mockito.when(itemMapper.toEntity(requestDto)).thenReturn(item);
         Mockito.when(itemRepository.save(item)).thenReturn(item);
         Mockito.when(itemMapper.toDto(item)).thenReturn(expected);
 
         //when
-        ItemDto actual = itemService.save(requestDto);
+        ItemDto actual = itemService.save(requestDto, login);
 
         //then
         Assertions.assertTrue(EqualsBuilder.reflectionEquals(expected, actual));
@@ -103,12 +113,17 @@ class ItemServiceImplTest {
         Item item = new Item();
         item.setName(requestDto.name());
 
+        String login = "testuser";
+        User user = new User();
+        user.setLogin(login);
+
+        Mockito.when(userRepository.findByLogin(login)).thenReturn(java.util.Optional.of(user));
         Mockito.when(itemMapper.toEntity(requestDto)).thenReturn(item);
         Mockito.when(itemRepository.save(item)).thenThrow(new RuntimeException("Save failed"));
 
         //when
         RuntimeException exception = Assertions.assertThrows(RuntimeException.class, () -> {
-            itemService.save(requestDto);
+            itemService.save(requestDto, login);
         });
 
         //then
