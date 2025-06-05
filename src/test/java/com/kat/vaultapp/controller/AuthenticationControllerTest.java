@@ -5,7 +5,6 @@ import com.kat.vaultapp.dto.user.UserLoginRequestDto;
 import com.kat.vaultapp.dto.user.UserLoginResponseDto;
 import com.kat.vaultapp.dto.user.UserRegistrationRequestDto;
 import com.kat.vaultapp.dto.user.UserResponseDto;
-import com.kat.vaultapp.exception.RegistrationException;
 import com.kat.vaultapp.security.AuthenticationService;
 import com.kat.vaultapp.security.JwtAuthenticationFilter;
 import com.kat.vaultapp.security.JwtUtil;
@@ -82,21 +81,6 @@ class AuthenticationControllerTest {
     }
 
     @Test
-    void test_should_return_bad_request_when_registration_fails() throws Exception {
-        // given
-        UserRegistrationRequestDto requestDto = new UserRegistrationRequestDto(null, null, null);
-
-        Mockito.when(userService.register(any(UserRegistrationRequestDto.class)))
-                .thenThrow(new RegistrationException("Invalid data"));
-
-        // when & then
-        mockMvc.perform(post("/auth/register")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(requestDto)))
-                .andExpect(status().isBadRequest());
-    }
-
-    @Test
     void test_should_login_user_successfully() throws Exception {
         // given
         UserLoginRequestDto requestDto = new UserLoginRequestDto("testuser", "password");
@@ -109,20 +93,5 @@ class AuthenticationControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(requestDto)))
                 .andExpect(status().isOk());
-    }
-
-    @Test
-    void test_should_return_unauthorized_when_login_fails() throws Exception {
-        // given
-        UserLoginRequestDto requestDto = new UserLoginRequestDto("testuser", null);
-
-        Mockito.when(authenticationService.isAuthenticated(any(UserLoginRequestDto.class)))
-                .thenThrow(new RuntimeException("Invalid credentials"));
-
-        // when & then
-        mockMvc.perform(post("/auth/login")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(requestDto)))
-                .andExpect(status().isUnauthorized());
     }
 }

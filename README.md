@@ -38,7 +38,7 @@ Database schema management is handled by Liquibase.
 
 ## Docker
 
-To run the application in a Docker container, please execute the command `docker compose up` in the root directory of the project.
+To run the application in a Docker container, please execute the command `docker compose up --build` in the root directory of the project.
 Prerequisites: Java version, Maven, Docker Compose.
 The application will be available at `http://localhost:8080` and the Swagger UI at `http://localhost:8080/swagger-ui/index.html`.
 

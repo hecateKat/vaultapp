@@ -72,7 +72,7 @@ class ItemControllerTest {
     @Test
     @WithMockUser(username = "testuser", roles = "USER")
     void test_should_create_item() throws Exception {
-        ItemRequestDto requestDto = new ItemRequestDto("New Item", UUID.randomUUID());
+        ItemRequestDto requestDto = new ItemRequestDto("New Item");
         ItemDto responseDto = new ItemDto(UUID.randomUUID(), "New Item", UUID.randomUUID());
 
         Mockito.when(itemService.save(any(ItemRequestDto.class))).thenReturn(responseDto);
@@ -88,7 +88,7 @@ class ItemControllerTest {
     @Test
     void test_should_return_unauthorized_when_creating_item_without_login_in() throws Exception {
         // given
-        ItemRequestDto requestDto = new ItemRequestDto("New Item", UUID.randomUUID());
+        ItemRequestDto requestDto = new ItemRequestDto("New Item");
 
         // when & then
         mockMvc.perform(post("/items")

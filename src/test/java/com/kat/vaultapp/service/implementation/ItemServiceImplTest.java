@@ -77,7 +77,7 @@ class ItemServiceImplTest {
     @Test
     public void test_should_return_true_when_item_is_saved() {
         //given
-        ItemRequestDto requestDto = new ItemRequestDto("Test Item", null);
+        ItemRequestDto requestDto = new ItemRequestDto("Test Item");
         Item item = new Item();
         item.setName(requestDto.name());
 
@@ -99,7 +99,7 @@ class ItemServiceImplTest {
     @Test
     public void test_should_return_false_when_item_is_not_saved() {
         //given
-        ItemRequestDto requestDto = new ItemRequestDto("Test Item", null);
+        ItemRequestDto requestDto = new ItemRequestDto("Test Item");
         Item item = new Item();
         item.setName(requestDto.name());
 
