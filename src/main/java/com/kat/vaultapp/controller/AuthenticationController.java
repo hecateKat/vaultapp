@@ -24,13 +24,12 @@ public class AuthenticationController {
 
     @PostMapping("/register")
     public UserResponseDto registerUser(
-            @RequestBody @Valid UserRegistrationRequestDto requestDto)
-            throws RegistrationException {
+            @RequestBody @Valid UserRegistrationRequestDto requestDto) throws RegistrationException {
         return userService.register(requestDto);
     }
 
     @PostMapping("/login")
-    public UserLoginResponseDto login(@RequestBody UserLoginRequestDto loginRequestDto) {
+    public UserLoginResponseDto login(@RequestBody @Valid UserLoginRequestDto loginRequestDto) {
         return authenticationService.isAuthenticated(loginRequestDto);
     }
 }

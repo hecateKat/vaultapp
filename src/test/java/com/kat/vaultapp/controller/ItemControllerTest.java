@@ -4,28 +4,31 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kat.vaultapp.dto.item.ItemDto;
 import com.kat.vaultapp.dto.item.ItemRequestDto;
 import com.kat.vaultapp.security.JwtUtil;
+import com.kat.vaultapp.service.UserService;
 import com.kat.vaultapp.service.implementation.ItemServiceImpl;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 import java.util.List;
 import java.util.UUID;
 import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(ItemController.class)
+@SpringBootTest
 class ItemControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
+    private static MockMvc mockMvc;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -36,10 +39,17 @@ class ItemControllerTest {
     @MockitoBean
     private ItemServiceImpl itemService;
 
+    @MockitoBean
+    private UserService userService;
+
     private static List<ItemDto> mockItems;
 
     @BeforeAll
-    static void setup() {
+    static void setup(@Autowired WebApplicationContext appContext) {
+        mockMvc = MockMvcBuilders
+                .webAppContextSetup(appContext)
+                .apply(springSecurity())
+                .build();
         mockItems = List.of(
                 new ItemDto(UUID.randomUUID(), "Item 1", UUID.randomUUID()),
                 new ItemDto(UUID.randomUUID(), "Item 2", UUID.randomUUID())
